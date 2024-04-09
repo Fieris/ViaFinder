@@ -1,6 +1,7 @@
 module ru.fieris.viafinder {
     requires javafx.controls;
     requires javafx.fxml;
+    requires org.apache.poi.poi;
 
     requires org.kordamp.ikonli.javafx;
 
