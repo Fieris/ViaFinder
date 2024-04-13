@@ -10,8 +10,7 @@ import java.io.File;
 import java.io.IOException;
 
 public class Application extends javafx.application.Application {
-    private FileChooser fileChooser;
-    private Stage mainStage;
+    private static Stage mainStage;
     @Override
     public void start(Stage stage) throws IOException {
         mainStage = stage;
@@ -21,26 +20,13 @@ public class Application extends javafx.application.Application {
         stage.setResizable(false);
         stage.setScene(scene);
 
-        fileChooserInitialize();
-
         stage.show();
     }
 
     public static void main(String[] args) {
         launch(args);
     }
-
-    private void fileChooserInitialize(){
-        fileChooser = new FileChooser();
-    }
-
-    public File openFileViaFileChooser(){
-
-
-        return fileChooser.showOpenDialog(getMainStage());
-    }
-
-    public Stage getMainStage() {
+    public static Stage getMainStage() {
         return mainStage;
     }
 
