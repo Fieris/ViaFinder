@@ -23,6 +23,7 @@ public class ExcelProcessor {
 
     /**
      * Конструктор открывает эксель файл и сохраняет все нужные данные из него
+     *
      * @param file Принимает Excel файл
      */
     public ExcelProcessor(File file) {
@@ -47,7 +48,7 @@ public class ExcelProcessor {
                 Iterator<Cell> cellIterator = rowIterator.next().cellIterator();
 
                 ExcelRow excelRow = new ExcelRow();
-                while(cellIterator.hasNext()){
+                while (cellIterator.hasNext()) {
                     excelRow.getCells().add(cellIterator.next());
                 }
                 excelRowArrayList.add(excelRow);
@@ -60,29 +61,30 @@ public class ExcelProcessor {
         }
 
         //создание ВИАиВВА листа
-        for(ExcelRow row : excelRowArrayList){
+        for (ExcelRow row : excelRowArrayList) {
             if (row.cells.get(5).getStringCellValue().toUpperCase().contains("ВИА") ||
-                    row.cells.get(5).getStringCellValue().toUpperCase().contains("ВВА")){
+                    row.cells.get(5).getStringCellValue().toUpperCase().contains("ВВА")) {
                 VIAandVVARowArrayList.add(row);
             }
         }
 
     }
 
+
     /**
      * Класс, представляющмй собой одну строку из эксель документа.
-     * Работает как аррей лист, каждый индекс листа - ячейка формата Object.
-     * Object потом можно кастить в дабл или стринг
+     * Работает как аррей лист, каждый индекс листа - ячейка формата Cell.
      */
-    public class ExcelRow{
+    @Deprecated
+    public class ExcelRow {
         private ArrayList<Cell> cells = new ArrayList<>();
 
         public ArrayList<Cell> getCells() {
             return cells;
         }
     }
-    @Deprecated
-    class ExcelRowOld{
+
+    class ExcelRowOld {
         private Double na_sklade;
         private Double na_prodaju;
         private String rashojdenia;
