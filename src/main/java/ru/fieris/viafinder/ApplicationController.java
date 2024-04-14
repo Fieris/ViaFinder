@@ -98,7 +98,8 @@ public class ApplicationController {
                 onlyInSecond.add(string);
             }
         }
-
+        newArticles.getItems().clear();
+        deletedArticles.getItems().clear();
         newArticles.getItems().addAll(onlyInSecond);
         deletedArticles.getItems().addAll(onlyInFirst);
     }
