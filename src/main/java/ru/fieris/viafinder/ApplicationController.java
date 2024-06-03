@@ -1,26 +1,21 @@
 package ru.fieris.viafinder;
 
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TableView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser;
-import org.apache.poi.ss.usermodel.Cell;
 import ru.fieris.viafinder.Excel.ExcelProcessor;
 
 import java.io.File;
 import java.util.*;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 public class ApplicationController {
     private final FileChooser fileChooser;
     private File file1;
     private File file2;
-    private ArrayList<ExcelProcessor.ExcelRow> firstList = new ArrayList<>();
-    private ArrayList<ExcelProcessor.ExcelRow> secondList = new ArrayList<>();
+    private LinkedList<ExcelProcessor.ExcelRow> firstList = new LinkedList<>();
+    private LinkedList<ExcelProcessor.ExcelRow> secondList = new LinkedList<>();
     private  Clipboard clipboard;
 
     @FXML
@@ -44,7 +39,7 @@ public class ApplicationController {
         }
 
         ExcelProcessor excelProcessor = new ExcelProcessor(file1);
-        firstList = excelProcessor.getVIAandVVARowArrayList();
+        firstList = excelProcessor.getvIAandVVARowArrayList();
     }
     @FXML
     private void openFile2MenuButton(){
@@ -56,28 +51,14 @@ public class ApplicationController {
         }
 
         ExcelProcessor excelProcessor = new ExcelProcessor(file2);
-        secondList = excelProcessor.getVIAandVVARowArrayList();
+        secondList = excelProcessor.getvIAandVVARowArrayList();
     }
 
     @FXML
     private void compare(){
         LinkedList<String> onlyInFirst = new LinkedList<>();
         LinkedList<String> onlyInSecond = new LinkedList<>();
-//        for(int i = 0; i < firstList.size(); i++){
-//            for(int j = 0; j < secondList.size();){
-//                if(firstList.get(i).getCells().get(3).toString().equals(secondList.get(j).getCells().get(3).toString())){
-//                    break;
-//                } else {
-//                    j++;
-//                }
-//                if(j == secondList.size()){
-//                    onlyInFirst.add(firstList.get(i));
-//                }
-//            }
-//        }
-//        for(ExcelProcessor.ExcelRow row: onlyInFirst){
-//            System.out.println(row.getCells().get(3));
-//        }
+
         ArrayList<String> articles1 = new ArrayList<>();
         for (ExcelProcessor.ExcelRow row : firstList){
             articles1.add(row.getCells().get(3).toString());

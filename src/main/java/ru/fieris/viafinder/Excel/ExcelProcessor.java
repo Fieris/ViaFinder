@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 
 /**
  * Класс, занимающийся всей обработкой эксель документа
@@ -18,8 +19,9 @@ public class ExcelProcessor {
     //Хранит дату из ячейки А1
     private final String dateInA1Cell;
     private final ArrayList<String> titleCellList = new ArrayList<>();
+    @Deprecated
     private final ArrayList<ExcelRow> excelRowArrayList = new ArrayList<>();
-    private final ArrayList<ExcelRow> VIAandVVARowArrayList = new ArrayList<>();
+    private final LinkedList<ExcelRow> vIAandVVARowArrayList = new LinkedList<>();
 
     /**
      * Конструктор открывает эксель файл и сохраняет все нужные данные из него
@@ -38,34 +40,56 @@ public class ExcelProcessor {
             Iterator<Cell> titleCellIterator = rowIterator.next().cellIterator();
 
             //сохранение тайтлов таблицы в лист
-            while (titleCellIterator.hasNext()) {
-                titleCellList.add(titleCellIterator.next().getStringCellValue());
-            }
+//            while (titleCellIterator.hasNext()) {
+//                titleCellList.add(titleCellIterator.next().getStringCellValue());
+//            }
 
 
             //сохранение всей таблицы в excelRowArrayList
-            while (rowIterator.hasNext()) {
+//            while (rowIterator.hasNext()) {
+//                Iterator<Cell> cellIterator = rowIterator.next().cellIterator();
+//
+//                ExcelRow excelRow = new ExcelRow();
+//                while (cellIterator.hasNext()) {
+//                    excelRow.getCells().add(cellIterator.next());
+//                }
+//                excelRowArrayList.add(excelRow);
+//            }
+
+            //Сохранение виа и вва товара в LinkedList
+            while (rowIterator.hasNext()){
                 Iterator<Cell> cellIterator = rowIterator.next().cellIterator();
 
                 ExcelRow excelRow = new ExcelRow();
-                while (cellIterator.hasNext()) {
+                while(cellIterator.hasNext()){
                     excelRow.getCells().add(cellIterator.next());
                 }
-                excelRowArrayList.add(excelRow);
+                if(excelRow.getCells().get(5).getStringCellValue().toUpperCase().contains("ВИА") ||
+                        excelRow.getCells().get(5).getStringCellValue().toUpperCase().contains("ВВА")){
+                    if(     excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".АКЦИЯ") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".СРОКИ") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".ПРИЮТ") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".АКЦИЯ") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".РЕКЛАМА") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".ОПТ") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".PETSHOPDAYS") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".ВЫСТАВКА") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".СЭМПЛ") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".УЦ") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".БОНУС") ||
+                            excelRow.getCells().get(3).getStringCellValue().toUpperCase().contains(".ПЕТШОП")
+                    ){
+                        continue;
+                    }
+                    vIAandVVARowArrayList.add(excelRow);
+                }
+
             }
 
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (InvalidFormatException e) {
             throw new RuntimeException(e);
-        }
-
-        //создание ВИАиВВА листа
-        for (ExcelRow row : excelRowArrayList) {
-            if (row.cells.get(5).getStringCellValue().toUpperCase().contains("ВИА") ||
-                    row.cells.get(5).getStringCellValue().toUpperCase().contains("ВВА")) {
-                VIAandVVARowArrayList.add(row);
-            }
         }
 
     }
@@ -75,7 +99,7 @@ public class ExcelProcessor {
      * Класс, представляющмй собой одну строку из эксель документа.
      * Работает как аррей лист, каждый индекс листа - ячейка формата Cell.
      */
-    @Deprecated
+
     public class ExcelRow {
         private ArrayList<Cell> cells = new ArrayList<>();
 
@@ -84,6 +108,7 @@ public class ExcelProcessor {
         }
     }
 
+    @Deprecated
     class ExcelRowOld {
         private Double na_sklade;
         private Double na_prodaju;
@@ -320,7 +345,7 @@ public class ExcelProcessor {
         return titleCellList;
     }
 
-    public ArrayList<ExcelRow> getVIAandVVARowArrayList() {
-        return VIAandVVARowArrayList;
+    public LinkedList<ExcelRow> getvIAandVVARowArrayList() {
+        return vIAandVVARowArrayList;
     }
 }
