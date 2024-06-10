@@ -2,10 +2,14 @@ package ru.fieris.viafinder;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser;
-import ru.fieris.viafinder.Excel.ExcelProcessor;
+import ru.fieris.viafinder.Excel.ExcelFileProcessor;
+import ru.fieris.viafinder.Excel.ExcelRow;
 
 import java.io.File;
 import java.util.*;
@@ -14,21 +18,35 @@ public class ApplicationController {
     private final FileChooser fileChooser;
     private File file1;
     private File file2;
-    private LinkedList<ExcelProcessor.ExcelRow> firstList = new LinkedList<>();
-    private LinkedList<ExcelProcessor.ExcelRow> secondList = new LinkedList<>();
+    private LinkedList<ExcelRow> firstList = new LinkedList<>();
+    private LinkedList<ExcelRow> secondList = new LinkedList<>();
     private  Clipboard clipboard;
+
 
     @FXML
     private ListView<String> newArticles;
     @FXML
     private ListView<String> deletedArticles;
 
+    @FXML
+    private TableView<ExcelRow> newArticlesTable;
+    @FXML
+    private TableView<ExcelRow> deletedArticlesTable;
+
     public ApplicationController(){
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Excel files", "*.xlsx");
-        fileChooser.getExtensionFilters().add(0,extensionFilter);
+        fileChooser.getExtensionFilters().addFirst(extensionFilter);
 
         clipboard = Clipboard.getSystemClipboard();
+        initializeTableViews();
+    }
+
+    /**
+     * Инициализирует tableView
+     */
+    private void initializeTableViews(){
+
     }
     @FXML
     private void openFile1MenuButton(){
@@ -38,20 +56,43 @@ public class ApplicationController {
             return;
         }
 
-        ExcelProcessor excelProcessor = new ExcelProcessor(file1);
-        firstList = excelProcessor.getvIAandVVARowArrayList();
+        ExcelFileProcessor excelFileProcessor = new ExcelFileProcessor(file1);
+        firstList = excelFileProcessor.getvIAandVVARowList();
+
+        //заполнение таблицы рядами
+        newArticlesTable.getColumns().clear();
+        LinkedList<String> titles = excelFileProcessor.getTitleCellList();
+
+        TableColumn<ExcelRow, String> magazinColumn = new TableColumn<>(titles.getFirst());
+        magazinColumn.setCellValueFactory(new PropertyValueFactory<>("magazin"));
+
+        TableColumn<ExcelRow, String> naSkladeColumn = new TableColumn<>(titles.get(1));
+        naSkladeColumn.setCellValueFactory(new PropertyValueFactory<>("na_sklade"));
+
+        TableColumn<ExcelRow, String> prodanoColumn = new TableColumn<>(titles.get(2));
+        prodanoColumn.setCellValueFactory(new PropertyValueFactory<>("prodano"));
+
+        //TODO Закончить тут
+
+
+        newArticlesTable.getColumns().addAll(magazinColumn,naSkladeColumn,prodanoColumn);
     }
     @FXML
     private void openFile2MenuButton(){
-
         file2 =  fileChooser.showOpenDialog(Application.getMainStage());
         //Если файл не выбран, выход из метода
         if(Objects.isNull(file2)){
             return;
         }
 
-        ExcelProcessor excelProcessor = new ExcelProcessor(file2);
-        secondList = excelProcessor.getvIAandVVARowArrayList();
+        ExcelFileProcessor excelFileProcessor = new ExcelFileProcessor(file2);
+        secondList = excelFileProcessor.getvIAandVVARowList();
+
+        //заполнение таблицы рядами
+        deletedArticlesTable.getColumns().clear();
+        for(String string : excelFileProcessor.getTitleCellList()){
+            deletedArticlesTable.getColumns().add(new TableColumn<>(string));
+        }
     }
 
     @FXML
@@ -59,13 +100,16 @@ public class ApplicationController {
         LinkedList<String> onlyInFirst = new LinkedList<>();
         LinkedList<String> onlyInSecond = new LinkedList<>();
 
+
+
+
         ArrayList<String> articles1 = new ArrayList<>();
-        for (ExcelProcessor.ExcelRow row : firstList){
-            articles1.add(row.getCells().get(3).toString());
+        for (ExcelRow row : firstList){
+            articles1.add(row.getArticul());
         }
         ArrayList<String> articles2 = new ArrayList<>();
-        for(ExcelProcessor.ExcelRow row : secondList){
-            articles2.add(row.getCells().get(3).toString());
+        for(ExcelRow row : secondList){
+            articles2.add(row.getArticul());
         }
 
         for(String string : articles1){
@@ -79,10 +123,14 @@ public class ApplicationController {
                 onlyInSecond.add(string);
             }
         }
-        newArticles.getItems().clear();
-        deletedArticles.getItems().clear();
-        newArticles.getItems().addAll(onlyInSecond);
-        deletedArticles.getItems().addAll(onlyInFirst);
+
+        newArticlesTable.getItems().addAll(firstList);
+
+
+//        newArticles.getItems().clear();
+//        deletedArticles.getItems().clear();
+//        newArticles.getItems().addAll(onlyInSecond);
+//        deletedArticles.getItems().addAll(onlyInFirst);
     }
 
     @FXML

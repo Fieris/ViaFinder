@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.Menu?>
-<?import javafx.scene.control.MenuBar?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="558.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.fieris.viafinder.ApplicationController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="558.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.fieris.viafinder.ApplicationController">
    <children>
       <MenuBar layoutY="2.0">
         <menus>
@@ -32,22 +27,8 @@
         </menus>
       </MenuBar>
       <Label layoutX="233.0" layoutY="57.0" text="Новые артикулы" />
-      <ListView fx:id="newArticles" layoutX="110.0" layoutY="74.0" prefHeight="320.0" prefWidth="338.0">
-         <contextMenu>
-            <ContextMenu>
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#copyNewArticles" text="Скопировать" />
-              </items>
-            </ContextMenu>
-         </contextMenu></ListView>
-      <ListView fx:id="deletedArticles" layoutX="110.0" layoutY="427.0" prefHeight="330.0" prefWidth="338.0">
-         <contextMenu>
-            <ContextMenu>
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#copyDeletedArticles" text="Скопировать" />
-              </items>
-            </ContextMenu>
-         </contextMenu></ListView>
       <Label layoutX="221.0" layoutY="410.0" text="Удаленные артикулы" />
+      <TableView fx:id="newArticlesTable" layoutX="3.0" layoutY="83.0" prefHeight="298.0" prefWidth="551.0" />
+      <TableView fx:id="deletedArticlesTable" layoutX="1.0" layoutY="452.0" prefHeight="279.0" prefWidth="558.0" />
    </children>
 </AnchorPane>
