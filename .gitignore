@@ -35,3 +35,15 @@ build/
 
 ### Mac OS ###
 .DS_Store
+/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst
+/target/classes/ru/fieris/viafinder/Application.class
+/target/classes/ru/fieris/viafinder/Application-view.fxml
+/target/classes/ru/fieris/viafinder/ApplicationController.class
+/target/classes/ru/fieris/viafinder/Excel/ExcelFileProcessor$ExcelRowOld.class
+/target/classes/ru/fieris/viafinder/Excel/ExcelRow.class
+/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst
+/target/classes/ru/fieris/viafinder/Launcher.class
+/target/classes/module-info.class
+/target/classes/META-INF/MANIFEST.MF
+/target/original-VIAFinder-1.0.jar
+/target/maven-archiver/pom.properties
