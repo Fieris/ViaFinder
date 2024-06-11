@@ -76,30 +76,45 @@ public class ApplicationController {
 
         TableColumn<ExcelRow, String> magazinColumn = new TableColumn<>(titles.getFirst());
         magazinColumn.setCellValueFactory(new PropertyValueFactory<>("magazin"));
+        magazinColumn.setPrefWidth(125);
+        magazinColumn.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<ExcelRow, String> naSkladeColumn = new TableColumn<>(titles.get(1));
         naSkladeColumn.setCellValueFactory(new PropertyValueFactory<>("na_sklade"));
+        naSkladeColumn.setStyle("-fx-alignment: CENTER; -fx-integer");
+        
 
         TableColumn<ExcelRow, String> prodanoColumn = new TableColumn<>(titles.get(2));
         prodanoColumn.setCellValueFactory(new PropertyValueFactory<>("prodano"));
+        prodanoColumn.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<ExcelRow, String> articulColumn = new TableColumn<>(titles.get(3));
         articulColumn.setCellValueFactory(new PropertyValueFactory<>("articul"));
+        articulColumn.setPrefWidth(110);
+        articulColumn.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<ExcelRow, String> naimenovanieColumn = new TableColumn<>(titles.get(4));
         naimenovanieColumn.setCellValueFactory(new PropertyValueFactory<>("naimenovanie"));
+        naimenovanieColumn.setPrefWidth(380);
+        naimenovanieColumn.setStyle("-fx-alignment: CENTER-LEFT;");
 
         TableColumn<ExcelRow, String> proizvoditelColumn = new TableColumn<>(titles.get(5));
         proizvoditelColumn.setCellValueFactory(new PropertyValueFactory<>("proizvoditel"));
+        proizvoditelColumn.setPrefWidth(150);
+        proizvoditelColumn.setStyle("-fx-alignment: CENTER-LEFT;");
 
         TableColumn<ExcelRow,String> massaColumn = new TableColumn<>(titles.get(6));
         massaColumn.setCellValueFactory(new PropertyValueFactory<>("massa"));
+        massaColumn.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<ExcelRow, String> shtrihKodColumn = new TableColumn<>(titles.get(7));
         shtrihKodColumn.setCellValueFactory(new PropertyValueFactory<>("shtrih_kod"));
+        shtrihKodColumn.setPrefWidth(150);
+        shtrihKodColumn.setStyle("-fx-alignment: CENTER;");
 
         TableColumn<ExcelRow, String> poMatriceColumn = new TableColumn<>(titles.get(8));
         poMatriceColumn.setCellValueFactory(new PropertyValueFactory<>("po_matrice"));
+        poMatriceColumn.setStyle("-fx-alignment: CENTER;");
 
 
 
