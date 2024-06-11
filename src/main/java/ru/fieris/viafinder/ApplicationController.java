@@ -48,6 +48,16 @@ public class ApplicationController {
     private void initializeTableViews(){
 
     }
+
+    /**
+     * Открывает эксель документ и делает всю необходимую работу
+     * @param file ссылка на эксель файл
+     * @param tableNumber0_1 значение 0 - 1, номер таблицы из которого вызывается команда, например:
+     *                      0 для первой таблицы или 1 для второй
+     */
+    private void openFileLogic(File file, int tableNumber0_1){
+
+    }
     @FXML
     private void openFile1MenuButton(){
         file1 =  fileChooser.showOpenDialog(Application.getMainStage());
@@ -72,10 +82,27 @@ public class ApplicationController {
         TableColumn<ExcelRow, String> prodanoColumn = new TableColumn<>(titles.get(2));
         prodanoColumn.setCellValueFactory(new PropertyValueFactory<>("prodano"));
 
-        //TODO Закончить тут
+        TableColumn<ExcelRow, String> articulColumn = new TableColumn<>(titles.get(3));
+        articulColumn.setCellValueFactory(new PropertyValueFactory<>("articul"));
+
+        TableColumn<ExcelRow, String> naimenovanieColumn = new TableColumn<>(titles.get(4));
+        naimenovanieColumn.setCellValueFactory(new PropertyValueFactory<>("naimenovanie"));
+
+        TableColumn<ExcelRow, String> proizvoditelColumn = new TableColumn<>(titles.get(5));
+        proizvoditelColumn.setCellValueFactory(new PropertyValueFactory<>("proizvoditel"));
+
+        TableColumn<ExcelRow,String> massaColumn = new TableColumn<>(titles.get(6));
+        massaColumn.setCellValueFactory(new PropertyValueFactory<>("massa"));
+
+        TableColumn<ExcelRow, String> shtrihKodColumn = new TableColumn<>(titles.get(7));
+        shtrihKodColumn.setCellValueFactory(new PropertyValueFactory<>("shtrih_kod"));
+
+        TableColumn<ExcelRow, String> poMatriceColumn = new TableColumn<>(titles.get(8));
+        poMatriceColumn.setCellValueFactory(new PropertyValueFactory<>("po_matrice"));
 
 
-        newArticlesTable.getColumns().addAll(magazinColumn,naSkladeColumn,prodanoColumn);
+        newArticlesTable.getColumns().addAll(magazinColumn,naSkladeColumn,prodanoColumn,articulColumn,naimenovanieColumn,
+                proizvoditelColumn, massaColumn, shtrihKodColumn, poMatriceColumn);
     }
     @FXML
     private void openFile2MenuButton(){
@@ -124,7 +151,14 @@ public class ApplicationController {
             }
         }
 
-        newArticlesTable.getItems().addAll(firstList);
+//        newArticlesTable.getItems().addAll(firstList);
+        for(ExcelRow excelRow : firstList){
+            for(String string : onlyInFirst){
+                if(excelRow.getArticul().equals(string)){
+                    newArticlesTable.getItems().add(excelRow);
+                }
+            }
+        }
 
 
 //        newArticles.getItems().clear();

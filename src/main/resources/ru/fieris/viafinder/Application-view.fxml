@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="558.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.fieris.viafinder.ApplicationController">
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.fieris.viafinder.ApplicationController">
    <children>
       <MenuBar layoutY="2.0">
         <menus>
@@ -26,9 +31,16 @@
           </Menu>
         </menus>
       </MenuBar>
-      <Label layoutX="233.0" layoutY="57.0" text="Новые артикулы" />
-      <Label layoutX="221.0" layoutY="410.0" text="Удаленные артикулы" />
-      <TableView fx:id="newArticlesTable" layoutX="3.0" layoutY="83.0" prefHeight="298.0" prefWidth="551.0" />
-      <TableView fx:id="deletedArticlesTable" layoutX="1.0" layoutY="452.0" prefHeight="279.0" prefWidth="558.0" />
+      <Label layoutX="233.0" layoutY="57.0" text="Только в первом списке" />
+      <Label layoutX="221.0" layoutY="410.0" text="Только во втором списке" />
+      <TableView fx:id="newArticlesTable" layoutX="3.0" layoutY="83.0" prefHeight="298.0" prefWidth="1265.0" AnchorPane.leftAnchor="3.0" AnchorPane.rightAnchor="12.0">
+         <contextMenu>
+            <ContextMenu>
+              <items>
+                <MenuItem mnemonicParsing="false" text="Открыть файл" />
+              </items>
+            </ContextMenu>
+         </contextMenu></TableView>
+      <TableView fx:id="deletedArticlesTable" layoutX="1.0" layoutY="452.0" prefHeight="279.0" prefWidth="1265.0" />
    </children>
 </AnchorPane>
