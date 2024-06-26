@@ -43,6 +43,11 @@ public class ApplicationController {
     @FXML
     public Menu secondTableRecentFilesMenu;
 
+    @FXML
+    public Label firstFileNameLabel;
+    @FXML
+    public Label secondFileNameLabel;
+
     public ApplicationController(){
         fileChooser = new FileChooser();
         FileChooser.ExtensionFilter extensionFilter = new FileChooser.ExtensionFilter("Excel files", "*.xlsx");
@@ -52,6 +57,11 @@ public class ApplicationController {
     }
     public void initialize(){
         initializeUpdateTableViews();
+
+
+        //Плейсхолдеры
+        onlyInFirstTable.setPlaceholder(new Label("Нет данных"));
+        onlyInSecondTable.setPlaceholder(new Label("Нет данных"));
     }
 
     /**
@@ -111,6 +121,13 @@ public class ApplicationController {
         firstTableCounter.setText("0");
         secondTableCounter.setText("0");
         //////////////////////////////
+
+        //Заполнение лейбла с названием файла
+        if(tableNumber0_1 == 0){
+            firstFileNameLabel.setText(file.getName());
+        } else {
+            secondFileNameLabel.setText(file.getName());
+        }
 
 
         ExcelFileProcessor excelFileProcessor = new ExcelFileProcessor(file);
@@ -320,7 +337,17 @@ public class ApplicationController {
         return files;
     }
 
+    @FXML
+    private void openRecentFilesFolder(){
+        try{
+            String osName = System.getProperty("os.name");
+            if(osName.toLowerCase().contains("windows")){
+                Runtime.getRuntime().exec("explorer " + Application.getProgramDirectory());
+            } else if (osName.toLowerCase().contains("linux")) {
+                Runtime.getRuntime().exec("xdg-open " + Application.getProgramDirectory());
+            }
+        } catch (IOException ignored){
+        }
 
-
-
+    }
 }

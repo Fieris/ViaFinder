@@ -2,6 +2,7 @@ package ru.fieris.viafinder;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -10,6 +11,7 @@ import org.apache.poi.hssf.extractor.ExcelExtractor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Objects;
 
 public class Application extends javafx.application.Application {
     private static Stage mainStage;
@@ -39,6 +41,8 @@ public class Application extends javafx.application.Application {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        Image image = new Image(Objects.requireNonNull(Application.class.getResourceAsStream("icons/box.png")));
+        stage.getIcons().add(image);
 
         stage.setTitle("Поиск ВИА и ВВА");
         stage.setResizable(false);

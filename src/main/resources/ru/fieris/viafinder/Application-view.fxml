@@ -17,6 +17,7 @@
           <Menu mnemonicParsing="false" text="Файл">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#compare" text="Сравнить" />
+                  <MenuItem mnemonicParsing="false" onAction="#openRecentFilesFolder" text="Папка недавних файлов" />
             </items>
           </Menu>
         </menus>
@@ -34,7 +35,7 @@
             <ContextMenu>
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#firstTableFileOpenButton" text="Открыть файл" />
-                  <Menu fx:id="firstTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы"/>
+                  <Menu fx:id="firstTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы" />
                   <MenuItem mnemonicParsing="false" onAction="#copyFirstTableArticles" text="Скопировать арты" />
               </items>
             </ContextMenu>
@@ -44,7 +45,7 @@
             <ContextMenu>
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#secondTableFileOpenButton" text="Открыть файл" />
-                  <Menu fx:id="secondTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы"/>
+                  <Menu fx:id="secondTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы" />
                   <MenuItem mnemonicParsing="false" onAction="#copySecondTableArticles" text="Скопировать арты" />
               </items>
             </ContextMenu>
@@ -69,5 +70,13 @@
             <Font name="Arial" size="14.0" />
          </font>
       </TextField>
+      <Label fx:id="firstFileNameLabel" layoutX="14.0" layoutY="29.0" prefHeight="17.0" prefWidth="344.0">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font></Label>
+      <Label fx:id="secondFileNameLabel" layoutX="14.0" layoutY="411.0" prefHeight="17.0" prefWidth="344.0">
+         <font>
+            <Font name="Arial" size="14.0" />
+         </font></Label>
    </children>
 </AnchorPane>
