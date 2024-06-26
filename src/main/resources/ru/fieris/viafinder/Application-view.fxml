@@ -36,7 +36,11 @@
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#firstTableFileOpenButton" text="Открыть файл" />
                   <Menu fx:id="firstTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы" />
-                  <MenuItem mnemonicParsing="false" onAction="#copyFirstTableArticles" text="Скопировать арты" />
+                  <Menu text="Скопировать:">
+                     <items>
+                        <MenuItem mnemonicParsing="false" onAction="#copyFirstTableArticles" text="Артикулы" />
+                         <MenuItem onAction="#copyFirstTable" text="Всю таблицу"/>
+                     </items></Menu>
               </items>
             </ContextMenu>
          </contextMenu></TableView>
@@ -46,7 +50,12 @@
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#secondTableFileOpenButton" text="Открыть файл" />
                   <Menu fx:id="secondTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы" />
-                  <MenuItem mnemonicParsing="false" onAction="#copySecondTableArticles" text="Скопировать арты" />
+                  <Menu text="Скопировать:">
+                      <items>
+                          <MenuItem onAction="#copySecondTableArticles" text="Артикулы" />
+                          <MenuItem onAction="#copySecondTable" text="Всю таблицу"/>
+                      </items>
+                  </Menu>
               </items>
             </ContextMenu>
          </contextMenu></TableView>

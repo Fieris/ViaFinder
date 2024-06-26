@@ -1,5 +1,6 @@
 package ru.fieris.viafinder;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -133,7 +134,6 @@ public class ApplicationController {
         ExcelFileProcessor excelFileProcessor = new ExcelFileProcessor(file);
 
         File destinationFile = new File(Application.getProgramDirectory() +"\\" + file.getName());
-
 
         //Копирует открытый файл в папку программы
         try {
@@ -307,7 +307,7 @@ public class ApplicationController {
     }
 
     /**
-     * Логика копирования
+     * Логика копирования артикулов
      * @param tableNumber0_1 номер таблицы 0 или 1
      */
     private void copyArticles(int tableNumber0_1){
@@ -327,6 +327,87 @@ public class ApplicationController {
 
         clipboardContent.putString(stringBuilder.toString());
         clipboard.setContent(clipboardContent);
+    }
+
+    /**
+     * Логика копирования всей таблицы
+     * @param tableNumber0_1 номер таблицы 0 или 1
+     */
+    private void copyTable(int tableNumber0_1) {
+        ClipboardContent clipboardContent = new ClipboardContent();
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append("Магазин");
+        stringBuilder.append("\t");
+        stringBuilder.append("На складе");
+        stringBuilder.append("\t");
+        stringBuilder.append("Продано");
+        stringBuilder.append("\t");
+        stringBuilder.append("Артикул");
+        stringBuilder.append("\t");
+        stringBuilder.append("Наименование");
+        stringBuilder.append("\t");
+        stringBuilder.append("Производитель");
+        stringBuilder.append("\t");
+        stringBuilder.append("Масса, кг");
+        stringBuilder.append("\t");
+        stringBuilder.append("Штрих-код");
+        stringBuilder.append("\t");
+        stringBuilder.append("По матрице");
+        stringBuilder.append("\r");
+        if(tableNumber0_1 == 0){
+            for(ExcelRow row : onlyInFirstTable.getItems()){
+                stringBuilder.append(row.getMagazin());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getNa_sklade());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getProdano());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getArticul());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getNaimenovanie());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getProizvoditel());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getMassa());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getShtrih_kod());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getPo_matrice());
+                stringBuilder.append("\r");
+            }
+        } else if (tableNumber0_1 == 1){
+            for(ExcelRow row : onlyInSecondTable.getItems()){
+                stringBuilder.append(row.getMagazin());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getNa_sklade());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getProdano());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getArticul());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getNaimenovanie());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getProizvoditel());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getMassa());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getShtrih_kod());
+                stringBuilder.append("\t");
+                stringBuilder.append(row.getPo_matrice());
+                stringBuilder.append("\r");
+            }
+        }
+        clipboardContent.putString(stringBuilder.toString());
+        clipboard.setContent(clipboardContent);
+    }
+    @FXML
+    private void copyFirstTable(){
+        copyTable(0);
+    }
+
+    @FXML
+    private void copySecondTable(){
+        copyTable(1);
     }
 
     private List<File> getRecentFiles(){
@@ -350,4 +431,6 @@ public class ApplicationController {
         }
 
     }
+
+
 }
