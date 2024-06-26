@@ -1,27 +1,30 @@
 package ru.fieris.viafinder;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser;
+import org.apache.commons.io.FileUtils;
 import ru.fieris.viafinder.Excel.ExcelFileProcessor;
 import ru.fieris.viafinder.Excel.ExcelRow;
 
-import java.io.File;
+import java.io.*;
 import java.util.*;
 
 public class ApplicationController {
     private final FileChooser fileChooser;
+
+
+
     private File file1;
     private File file2;
     private LinkedList<ExcelRow> firstList = new LinkedList<>();
     private LinkedList<ExcelRow> secondList = new LinkedList<>();
-    private  Clipboard clipboard;
+    private final Clipboard clipboard;
 
 
 
@@ -35,6 +38,10 @@ public class ApplicationController {
 
     @FXML
     private TextField secondTableCounter;
+    @FXML
+    public Menu firstTableRecentFilesMenu;
+    @FXML
+    public Menu secondTableRecentFilesMenu;
 
     public ApplicationController(){
         fileChooser = new FileChooser();
@@ -42,14 +49,52 @@ public class ApplicationController {
         fileChooser.getExtensionFilters().addFirst(extensionFilter);
 
         clipboard = Clipboard.getSystemClipboard();
-        initializeTableViews();
+    }
+    public void initialize(){
+        initializeUpdateTableViews();
     }
 
     /**
      * Инициализирует tableView
      */
-    private void initializeTableViews(){
+    private void initializeUpdateTableViews(){
+        firstTableRecentFilesMenu.getItems().clear();
+        secondTableRecentFilesMenu.getItems().clear();
+        Image excelImage = new Image(Objects.requireNonNull(Application.class.getResourceAsStream("icons/excel 16x16.png")));
+        Image unknownImage = new Image(Objects.requireNonNull(Application.class.getResourceAsStream("icons/unknown16x16.png")));
 
+        firstTableRecentFilesMenu.setId("0");
+        secondTableRecentFilesMenu.setId("1");
+
+        if(getRecentFiles().isEmpty()){
+            firstTableRecentFilesMenu.getItems().add(new MenuItem("Пусто"));
+            secondTableRecentFilesMenu.getItems().add(new MenuItem("Пусто"));
+        } else {
+            //first table
+            for(File file : getRecentFiles()){
+                if(file.getName().endsWith(".xlsx")){
+                    MenuItem menuItem = new MenuItem(file.getName(), new ImageView(excelImage));
+                    menuItem.setOnAction(event -> {
+                        openFileLogic(file, 0);
+                    });
+                    firstTableRecentFilesMenu.getItems().add(menuItem);
+                } else {
+                    firstTableRecentFilesMenu.getItems().add(new MenuItem(file.getName(),new ImageView(unknownImage)));
+                }
+            }
+            //second table
+            for(File file : getRecentFiles()){
+                if(file.getName().endsWith(".xlsx")){
+                    MenuItem menuItem = new MenuItem(file.getName(), new ImageView(excelImage));
+                    menuItem.setOnAction(event -> {
+                        openFileLogic(file, 1);
+                    });
+                    secondTableRecentFilesMenu.getItems().add(menuItem);
+                } else {
+                    secondTableRecentFilesMenu.getItems().add(new MenuItem(file.getName(),new ImageView(unknownImage)));
+                }
+            }
+        }
     }
 
     /**
@@ -59,7 +104,29 @@ public class ApplicationController {
      *                      0 для первой таблицы или 1 для второй
      */
     private void openFileLogic(File file, int tableNumber0_1){
+
+        //Очистка/////////////////////
+        onlyInFirstTable.getItems().clear();
+        onlyInSecondTable.getItems().clear();
+        firstTableCounter.setText("0");
+        secondTableCounter.setText("0");
+        //////////////////////////////
+
+
         ExcelFileProcessor excelFileProcessor = new ExcelFileProcessor(file);
+
+        File destinationFile = new File(Application.getProgramDirectory() +"\\" + file.getName());
+
+
+        //Копирует открытый файл в папку программы
+        try {
+            FileUtils.copyFile(file,destinationFile);
+        }catch (IllegalArgumentException ignored){
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        initializeUpdateTableViews();
 
 
         //Очистка таблиц и сохранение листа с виа и вва в переменную
@@ -81,7 +148,7 @@ public class ApplicationController {
 
         TableColumn<ExcelRow, String> naSkladeColumn = new TableColumn<>(titles.get(1));
         naSkladeColumn.setCellValueFactory(new PropertyValueFactory<>("na_sklade"));
-        naSkladeColumn.setStyle("-fx-alignment: CENTER; -fx-integer");
+        naSkladeColumn.setStyle("-fx-alignment: CENTER;");
         
 
         TableColumn<ExcelRow, String> prodanoColumn = new TableColumn<>(titles.get(2));
@@ -130,6 +197,7 @@ public class ApplicationController {
     }
     @FXML
     private void firstTableFileOpenButton(){
+
         file1 =  fileChooser.showOpenDialog(Application.getMainStage());
         //Если файл не выбран, выход из метода
         if(Objects.isNull(file1)){
@@ -243,5 +311,16 @@ public class ApplicationController {
         clipboardContent.putString(stringBuilder.toString());
         clipboard.setContent(clipboardContent);
     }
+
+    private List<File> getRecentFiles(){
+        File[] directory = new File(Application.getProgramDirectory()).listFiles();
+        assert directory != null;
+        List<File> files = Arrays.stream(directory).toList();
+
+        return files;
+    }
+
+
+
 
 }

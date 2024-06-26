@@ -9,13 +9,16 @@ import org.apache.poi.hssf.extractor.ExcelExtractor;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 
 public class Application extends javafx.application.Application {
     private static Stage mainStage;
+    private static final String programDirectory = System.getProperty("user.home") + "\\Fieris\\ViaFinder";
     @Override
     public void start(Stage stage) throws IOException {
         mainStage = stage;
         stageInitializer(stage);
+        fileSystemInitializer();
         stage.show();
 
     }
@@ -37,8 +40,30 @@ public class Application extends javafx.application.Application {
             e.printStackTrace();
         }
 
-        stage.setTitle("Поиск новых ВИА и ВВА");
+        stage.setTitle("Поиск ВИА и ВВА");
         stage.setResizable(false);
         stage.setScene(scene);
+    }
+
+
+    /**
+     * Создает необходимые папки для хранения файлов
+     */
+    private void fileSystemInitializer() {
+        File file = new File(programDirectory);
+        if (!file.exists()) {
+            boolean isCreatedDirs = file.mkdirs();
+            if(isCreatedDirs){
+                System.out.println("Все ок");
+            } else {
+                System.out.println("Ошибка создания директорий");
+            }
+        }
+
+
+    }
+
+    public static String getProgramDirectory(){
+        return programDirectory;
     }
 }

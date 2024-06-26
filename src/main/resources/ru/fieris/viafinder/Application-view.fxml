@@ -14,7 +14,7 @@
    <children>
       <MenuBar layoutY="2.0">
         <menus>
-          <Menu mnemonicParsing="false" text="File">
+          <Menu mnemonicParsing="false" text="Файл">
             <items>
                   <MenuItem mnemonicParsing="false" onAction="#compare" text="Сравнить" />
             </items>
@@ -34,6 +34,7 @@
             <ContextMenu>
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#firstTableFileOpenButton" text="Открыть файл" />
+                  <Menu fx:id="firstTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы"/>
                   <MenuItem mnemonicParsing="false" onAction="#copyFirstTableArticles" text="Скопировать арты" />
               </items>
             </ContextMenu>
@@ -43,6 +44,7 @@
             <ContextMenu>
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#secondTableFileOpenButton" text="Открыть файл" />
+                  <Menu fx:id="secondTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы"/>
                   <MenuItem mnemonicParsing="false" onAction="#copySecondTableArticles" text="Скопировать арты" />
               </items>
             </ContextMenu>
