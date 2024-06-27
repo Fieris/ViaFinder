@@ -411,9 +411,11 @@ public class ApplicationController {
     }
 
     private List<File> getRecentFiles(){
-        File[] directory = new File(Application.getProgramDirectory()).listFiles();
-        assert directory != null;
-        List<File> files = Arrays.stream(directory).toList();
+//        File[] directory = new File(Application.getProgramDirectory()).listFiles();
+//        assert directory != null;
+//
+//        List<File> files = Arrays.stream(directory).toList();
+        List<File> files = new ArrayList<>();
 
         return files;
     }
