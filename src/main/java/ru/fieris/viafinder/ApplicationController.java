@@ -16,6 +16,7 @@ import java.util.*;
 
 public class ApplicationController {
     private final FileChooser fileChooser;
+    public ToggleGroup toggleGroupViaCategory;
     private LinkedList<ExcelRow> firstList = new LinkedList<>();
     private LinkedList<ExcelRow> secondList = new LinkedList<>();
     private final Clipboard clipboard;
@@ -51,8 +52,6 @@ public class ApplicationController {
     }
     public void initialize(){
         initializeUpdateTableViews();
-
-
         //Плейсхолдеры
         onlyInFirstTable.setPlaceholder(new Label("Нет данных"));
         onlyInSecondTable.setPlaceholder(new Label("Нет данных"));
@@ -346,7 +345,7 @@ public class ApplicationController {
         stringBuilder.append("Штрих-код");
         stringBuilder.append("\t");
         stringBuilder.append("По матрице");
-        stringBuilder.append("\r");
+        stringBuilder.append("\n");
         if(tableNumber0_1 == 0){
             for(ExcelRow row : onlyInFirstTable.getItems()){
                 stringBuilder.append(row.getMagazin());
@@ -366,7 +365,7 @@ public class ApplicationController {
                 stringBuilder.append(row.getShtrih_kod());
                 stringBuilder.append("\t");
                 stringBuilder.append(row.getPo_matrice());
-                stringBuilder.append("\r");
+                stringBuilder.append("\n");
             }
         } else if (tableNumber0_1 == 1){
             for(ExcelRow row : onlyInSecondTable.getItems()){
@@ -387,7 +386,7 @@ public class ApplicationController {
                 stringBuilder.append(row.getShtrih_kod());
                 stringBuilder.append("\t");
                 stringBuilder.append(row.getPo_matrice());
-                stringBuilder.append("\r");
+                stringBuilder.append("\n");
             }
         }
         clipboardContent.putString(stringBuilder.toString());
