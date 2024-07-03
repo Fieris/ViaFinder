@@ -3,26 +3,23 @@ package ru.fieris.viafinder;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import org.apache.poi.hssf.extractor.ExcelExtractor;
+import ru.fieris.viafinder.Json.JsonProperties;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
 import java.util.Objects;
 
 public class Application extends javafx.application.Application {
     private static Stage mainStage;
-    private static final String programDirectory = System.getProperty("user.home") + "\\Fieris\\ViaFinder";
+    private static final String programDirectory = System.getProperty("user.home");
+    private static JsonProperties jsonProperties;
     @Override
-    public void start(Stage stage) throws IOException {
+    public void start(Stage stage){
         mainStage = stage;
+        jsonProperties = new JsonProperties();
         stageInitializer(stage);
         fileSystemInitializer();
         stage.show();
-
     }
 
     public static void main(String[] args) {
@@ -35,11 +32,11 @@ public class Application extends javafx.application.Application {
 
     private void stageInitializer(Stage stage) {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("Application-view.fxml"));
-        Scene scene = null;
+        Scene scene;
         try {
             scene = new Scene(fxmlLoader.load());
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
         Image image = new Image(Objects.requireNonNull(Application.class.getResourceAsStream("icons/box.png")));
         stage.getIcons().add(image);
@@ -54,20 +51,13 @@ public class Application extends javafx.application.Application {
      * Создает необходимые папки для хранения файлов
      */
     private void fileSystemInitializer() {
-        File file = new File(programDirectory);
-        if (!file.exists()) {
-            boolean isCreatedDirs = file.mkdirs();
-            if(isCreatedDirs){
-                System.out.println("Все ок");
-            } else {
-                System.out.println("Ошибка создания директорий");
-            }
-        }
-
-
     }
 
     public static String getProgramDirectory(){
         return programDirectory;
+    }
+
+    public static JsonProperties getJsonProperties() {
+        return jsonProperties;
     }
 }

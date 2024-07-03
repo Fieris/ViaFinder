@@ -8,7 +8,6 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -18,7 +17,7 @@ import java.util.LinkedList;
 public class ExcelFileProcessor {
 
     private final LinkedList<String> titleCellList = new LinkedList<>();
-    private final LinkedList<ExcelRow> vIAandVVARowList = new LinkedList<>();
+    private final LinkedList<ExcelRow> VIAandVVARowList = new LinkedList<>();
 
     /**
      * Конструктор открывает эксель файл и сохраняет все нужные данные из него
@@ -56,43 +55,24 @@ public class ExcelFileProcessor {
 
                 if(excelRow.getNaimenovanie().toUpperCase().contains("ВИА") ||
                         excelRow.getNaimenovanie().toUpperCase().contains("ВВА")){
-                    vIAandVVARowList.add(excelRow);
+                    VIAandVVARowList.add(excelRow);
                 }
 
             }
 
 
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (InvalidFormatException e) {
+        } catch (IOException | InvalidFormatException e) {
             throw new RuntimeException(e);
         }
 
     }
-
-
-    /**
-     * Класс, представляющмй собой одну строку из эксель документа.
-     * Работает как аррей лист, каждый индекс листа - ячейка формата Cell.
-     */
-
-    @Deprecated
-    public static class ExcelRowOld {
-        private final ArrayList<Cell> cells = new ArrayList<>();
-
-        public ArrayList<Cell> getCells() {
-            return cells;
-        }
-    }
-
-
 
 
     public LinkedList<String> getTitleCellList() {
         return titleCellList;
     }
 
-    public LinkedList<ExcelRow> getvIAandVVARowList() {
-        return vIAandVVARowList;
+    public LinkedList<ExcelRow> getVIAandVVARowList() {
+        return VIAandVVARowList;
     }
 }

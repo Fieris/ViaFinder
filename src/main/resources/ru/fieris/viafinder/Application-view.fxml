@@ -10,82 +10,86 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.fieris.viafinder.ApplicationController">
-   <children>
-      <MenuBar layoutY="2.0">
-        <menus>
-          <Menu mnemonicParsing="false" text="Файл">
-            <items>
-                  <MenuItem mnemonicParsing="false" onAction="#compare" text="Сравнить" />
-                  <MenuItem mnemonicParsing="false" onAction="#openRecentFilesFolder" text="Папка недавних файлов" />
-            </items>
-          </Menu>
-        </menus>
-      </MenuBar>
-      <Label layoutX="556.0" layoutY="27.0" text="Только в первом списке">
-         <font>
-            <Font size="14.0" />
-         </font></Label>
-      <Label layoutX="552.0" layoutY="411.0" text="Только во втором списке">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font></Label>
-      <TableView fx:id="onlyInFirstTable" layoutX="3.0" layoutY="46.0" prefHeight="335.0" prefWidth="1263.0">
-         <contextMenu>
-            <ContextMenu>
+<AnchorPane xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.fieris.viafinder.ApplicationController">
+    <MenuBar layoutY="2.0">
+        <Menu mnemonicParsing="false" text="Файл">
+            <MenuItem mnemonicParsing="false" onAction="#compare" text="Сравнить"/>
+            <MenuItem onAction="#clearRecentFiles" text="Очистить недавние файлы"/>
+        </Menu>
+    </MenuBar>
+    <Label layoutX="556.0" layoutY="27.0" text="Только в первом списке">
+        <font>
+          <Font size="14.0"/>
+        </font>
+    </Label>
+    <Label layoutX="552.0" layoutY="411.0" text="Только во втором списке">
+        <font>
+          <Font name="Arial" size="14.0"/>
+        </font>
+    </Label>
+    <TableView fx:id="onlyInFirstTable" layoutX="3.0" layoutY="46.0" prefHeight="335.0" prefWidth="1263.0">
+        <contextMenu>
+          <ContextMenu>
               <items>
-                <MenuItem mnemonicParsing="false" onAction="#firstTableFileOpenButton" text="Открыть файл" />
-                  <Menu fx:id="firstTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы" />
-                  <Menu text="Скопировать:">
-                     <items>
-                        <MenuItem mnemonicParsing="false" onAction="#copyFirstTableArticles" text="Артикулы" />
-                         <MenuItem onAction="#copyFirstTable" text="Всю таблицу"/>
-                     </items></Menu>
-              </items>
-            </ContextMenu>
-         </contextMenu></TableView>
-      <TableView fx:id="onlyInSecondTable" layoutX="3.0" layoutY="427.0" prefHeight="335.0" prefWidth="1263.0">
-         <contextMenu>
-            <ContextMenu>
-              <items>
-                <MenuItem mnemonicParsing="false" onAction="#secondTableFileOpenButton" text="Открыть файл" />
-                  <Menu fx:id="secondTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы" />
+                  <MenuItem mnemonicParsing="false" onAction="#firstTableFileOpenButton" text="Открыть файл"/>
+                  <Menu fx:id="firstTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы"/>
                   <Menu text="Скопировать:">
                       <items>
-                          <MenuItem onAction="#copySecondTableArticles" text="Артикулы" />
+                          <MenuItem mnemonicParsing="false" onAction="#copyFirstTableArticles" text="Артикулы"/>
+                          <MenuItem onAction="#copyFirstTable" text="Всю таблицу"/>
+                      </items>
+                  </Menu>
+              </items>
+          </ContextMenu>
+        </contextMenu>
+    </TableView>
+    <TableView fx:id="onlyInSecondTable" layoutX="3.0" layoutY="427.0" prefHeight="335.0" prefWidth="1263.0">
+        <contextMenu>
+          <ContextMenu>
+              <items>
+                  <MenuItem mnemonicParsing="false" onAction="#secondTableFileOpenButton" text="Открыть файл"/>
+                  <Menu fx:id="secondTableRecentFilesMenu" mnemonicParsing="false" text="Недавние файлы"/>
+                  <Menu text="Скопировать:">
+                      <items>
+                          <MenuItem onAction="#copySecondTableArticles" text="Артикулы"/>
                           <MenuItem onAction="#copySecondTable" text="Всю таблицу"/>
                       </items>
                   </Menu>
               </items>
-            </ContextMenu>
-         </contextMenu></TableView>
-      <Label layoutX="1128.0" layoutY="19.0" text="Количество:">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font>
-      </Label>
-      <Label layoutX="1128.0" layoutY="403.0" text="Количество:">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font>
-      </Label>
-      <TextField fx:id="firstTableCounter" editable="false" layoutX="1208.0" layoutY="14.0" prefHeight="10.0" prefWidth="44.0" promptText="0" text="0">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font>
-      </TextField>
-      <TextField fx:id="secondTableCounter" editable="false" layoutX="1208.0" layoutY="398.0" prefHeight="10.0" prefWidth="44.0" promptText="0" text="0">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font>
-      </TextField>
-      <Label fx:id="firstFileNameLabel" layoutX="14.0" layoutY="29.0" prefHeight="17.0" prefWidth="344.0">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font></Label>
-      <Label fx:id="secondFileNameLabel" layoutX="14.0" layoutY="411.0" prefHeight="17.0" prefWidth="344.0">
-         <font>
-            <Font name="Arial" size="14.0" />
-         </font></Label>
-   </children>
+          </ContextMenu>
+        </contextMenu>
+    </TableView>
+    <Label layoutX="1128.0" layoutY="19.0" text="Количество:">
+        <font>
+          <Font name="Arial" size="14.0"/>
+        </font>
+    </Label>
+    <Label layoutX="1128.0" layoutY="403.0" text="Количество:">
+        <font>
+          <Font name="Arial" size="14.0"/>
+        </font>
+    </Label>
+    <TextField fx:id="firstTableCounter" editable="false" layoutX="1208.0" layoutY="14.0" prefHeight="10.0"
+               prefWidth="44.0" promptText="0" text="0">
+        <font>
+          <Font name="Arial" size="14.0"/>
+        </font>
+    </TextField>
+    <TextField fx:id="secondTableCounter" editable="false" layoutX="1208.0" layoutY="398.0" prefHeight="10.0"
+               prefWidth="44.0" promptText="0" text="0">
+        <font>
+          <Font name="Arial" size="14.0"/>
+        </font>
+    </TextField>
+    <Label fx:id="firstFileNameLabel" layoutX="14.0" layoutY="29.0" prefHeight="17.0" prefWidth="344.0">
+        <font>
+          <Font name="Arial" size="14.0"/>
+        </font>
+    </Label>
+    <Label fx:id="secondFileNameLabel" layoutX="14.0" layoutY="411.0" prefHeight="17.0" prefWidth="344.0">
+        <font>
+          <Font name="Arial" size="14.0"/>
+        </font>
+    </Label>
 </AnchorPane>

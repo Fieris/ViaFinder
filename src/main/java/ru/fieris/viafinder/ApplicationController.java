@@ -1,6 +1,5 @@
 package ru.fieris.viafinder;
 
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -9,7 +8,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 import javafx.stage.FileChooser;
-import org.apache.commons.io.FileUtils;
 import ru.fieris.viafinder.Excel.ExcelFileProcessor;
 import ru.fieris.viafinder.Excel.ExcelRow;
 
@@ -18,11 +16,6 @@ import java.util.*;
 
 public class ApplicationController {
     private final FileChooser fileChooser;
-
-
-
-    private File file1;
-    private File file2;
     private LinkedList<ExcelRow> firstList = new LinkedList<>();
     private LinkedList<ExcelRow> secondList = new LinkedList<>();
     private final Clipboard clipboard;
@@ -85,9 +78,7 @@ public class ApplicationController {
             for(File file : getRecentFiles()){
                 if(file.getName().endsWith(".xlsx")){
                     MenuItem menuItem = new MenuItem(file.getName(), new ImageView(excelImage));
-                    menuItem.setOnAction(event -> {
-                        openFileLogic(file, 0);
-                    });
+                    menuItem.setOnAction(event -> openFileLogic(file, 0));
                     firstTableRecentFilesMenu.getItems().add(menuItem);
                 } else {
                     firstTableRecentFilesMenu.getItems().add(new MenuItem(file.getName(),new ImageView(unknownImage)));
@@ -97,9 +88,7 @@ public class ApplicationController {
             for(File file : getRecentFiles()){
                 if(file.getName().endsWith(".xlsx")){
                     MenuItem menuItem = new MenuItem(file.getName(), new ImageView(excelImage));
-                    menuItem.setOnAction(event -> {
-                        openFileLogic(file, 1);
-                    });
+                    menuItem.setOnAction(event -> openFileLogic(file, 1));
                     secondTableRecentFilesMenu.getItems().add(menuItem);
                 } else {
                     secondTableRecentFilesMenu.getItems().add(new MenuItem(file.getName(),new ImageView(unknownImage)));
@@ -123,6 +112,22 @@ public class ApplicationController {
         secondTableCounter.setText("0");
         //////////////////////////////
 
+
+        //Работа с файлом
+        if(!file.exists()){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setContentText("");
+            alert.setTitle("Ошибка");
+            alert.setHeaderText("Файл:\r" + file + "\rне найден");
+            alert.show();
+
+            Application.getJsonProperties().removeRecentFile(file);
+            initializeUpdateTableViews();
+
+            return;
+        }
+        ExcelFileProcessor excelFileProcessor = new ExcelFileProcessor(file);
+
         //Заполнение лейбла с названием файла
         if(tableNumber0_1 == 0){
             firstFileNameLabel.setText(file.getName());
@@ -130,29 +135,17 @@ public class ApplicationController {
             secondFileNameLabel.setText(file.getName());
         }
 
-
-        ExcelFileProcessor excelFileProcessor = new ExcelFileProcessor(file);
-
-        File destinationFile = new File(Application.getProgramDirectory() +"\\" + file.getName());
-
-        //Копирует открытый файл в папку программы
-        try {
-            FileUtils.copyFile(file,destinationFile);
-        }catch (IllegalArgumentException ignored){
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
+        //Добавление файла в RecentFiles
+        Application.getJsonProperties().addRecentFile(file);
         initializeUpdateTableViews();
-
 
         //Очистка таблиц и сохранение листа с виа и вва в переменную
         if (tableNumber0_1 == 0) {
             onlyInFirstTable.getColumns().clear();
-            firstList = excelFileProcessor.getvIAandVVARowList();
+            firstList = excelFileProcessor.getVIAandVVARowList();
         } else {
             onlyInSecondTable.getColumns().clear();
-            secondList = excelFileProcessor.getvIAandVVARowList();
+            secondList = excelFileProcessor.getVIAandVVARowList();
         }
 
         //заполнение таблицы рядами
@@ -215,7 +208,7 @@ public class ApplicationController {
     @FXML
     private void firstTableFileOpenButton(){
 
-        file1 =  fileChooser.showOpenDialog(Application.getMainStage());
+        File file1 = fileChooser.showOpenDialog(Application.getMainStage());
         //Если файл не выбран, выход из метода
         if(Objects.isNull(file1)){
             return;
@@ -224,7 +217,7 @@ public class ApplicationController {
     }
     @FXML
     private void secondTableFileOpenButton(){
-        file2 =  fileChooser.showOpenDialog(Application.getMainStage());
+        File file2 = fileChooser.showOpenDialog(Application.getMainStage());
         //Если файл не выбран, выход из метода
         if(Objects.isNull(file2)){
             return;
@@ -411,27 +404,22 @@ public class ApplicationController {
     }
 
     private List<File> getRecentFiles(){
-//        File[] directory = new File(Application.getProgramDirectory()).listFiles();
-//        assert directory != null;
-//
-//        List<File> files = Arrays.stream(directory).toList();
-        List<File> files = new ArrayList<>();
-
-        return files;
+        return Application.getJsonProperties().getReadOnlyRecentFiles();
     }
 
     @FXML
-    private void openRecentFilesFolder(){
-        try{
-            String osName = System.getProperty("os.name");
-            if(osName.toLowerCase().contains("windows")){
-                Runtime.getRuntime().exec("explorer " + Application.getProgramDirectory());
-            } else if (osName.toLowerCase().contains("linux")) {
-                Runtime.getRuntime().exec("xdg-open " + Application.getProgramDirectory());
-            }
-        } catch (IOException ignored){
-        }
+    private void clearRecentFiles(){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Очистить недавние файлы?", ButtonType.YES, ButtonType.CANCEL);
+        alert.setTitle("Подтверждение");
+        alert.setHeaderText("");
 
+        Optional<ButtonType> optionalS = alert.showAndWait();
+        if(optionalS.isPresent() && optionalS.get().equals(ButtonType.YES)){
+            Application.getJsonProperties().clearRecentFiles();
+            initializeUpdateTableViews();
+        } else{
+            return;
+        }
     }
 
 
