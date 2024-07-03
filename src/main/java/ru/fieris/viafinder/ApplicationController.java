@@ -17,9 +17,14 @@ import java.util.*;
 public class ApplicationController {
     private final FileChooser fileChooser;
     public ToggleGroup toggleGroupViaCategory;
+    public ToggleGroup toggleGroupQuantityCategory;
+    public Menu quantitytoggleSubMenu;
     private LinkedList<ExcelRow> firstList = new LinkedList<>();
     private LinkedList<ExcelRow> secondList = new LinkedList<>();
     private final Clipboard clipboard;
+
+    @FXML
+    private Menu VIAandVVAtoggleSubMenu;
 
 
 
@@ -55,6 +60,19 @@ public class ApplicationController {
         //Плейсхолдеры
         onlyInFirstTable.setPlaceholder(new Label("Нет данных"));
         onlyInSecondTable.setPlaceholder(new Label("Нет данных"));
+
+        //Listener на toggleGroupViaCategory
+        toggleGroupViaCategory.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            VIAandVVAtoggleSubMenu.setText("Тип: " + ((RadioMenuItem)newValue).getText());
+            compare();
+        });
+
+        //Listener на toggleGroupQuantityCategory
+        toggleGroupQuantityCategory.selectedToggleProperty().addListener((observable, oldValue, newValue) -> {
+            quantitytoggleSubMenu.setText("Количество: " + ((MenuItem)newValue).getText());
+            compare();
+        });
+
     }
 
     /**
@@ -238,16 +256,64 @@ public class ApplicationController {
         LinkedList<String> onlyInFirst = new LinkedList<>();
         LinkedList<String> onlyInSecond = new LinkedList<>();
 
-
-
-
+        //Вывод списка с проверкой нескольких toggleGroup
         ArrayList<String> articles1 = new ArrayList<>();
-        for (ExcelRow row : firstList){
-            articles1.add(row.getArticul());
-        }
         ArrayList<String> articles2 = new ArrayList<>();
-        for(ExcelRow row : secondList){
-            articles2.add(row.getArticul());
+        //Проверка toggleGroupViaCategory
+        if(toggleGroupViaCategory.getToggles().getFirst().isSelected()){
+            for (ExcelRow row : firstList){
+                articles1.add(row.getArticul());
+            }
+            for(ExcelRow row : secondList){
+                articles2.add(row.getArticul());
+            }
+        } else if(toggleGroupViaCategory.getToggles().get(1).isSelected()){
+            for (ExcelRow row : firstList){
+                if(row.getNaimenovanie().toUpperCase().contains("ВИА")){
+                    articles1.add(row.getArticul());
+                }
+            }
+            for(ExcelRow row : secondList){
+                if(row.getNaimenovanie().toUpperCase().contains("ВИА")) {
+                    articles2.add(row.getArticul());
+                }
+            }
+        } else if(toggleGroupViaCategory.getToggles().get(2).isSelected()){
+            for (ExcelRow row : firstList){
+                if(row.getNaimenovanie().toUpperCase().contains("ВВА")){
+                    articles1.add(row.getArticul());
+                }
+            }
+            for(ExcelRow row : secondList){
+                if(row.getNaimenovanie().toUpperCase().contains("ВВА")) {
+                    articles2.add(row.getArticul());
+                }
+            }
+        }
+        //Проверка toggleGroupQuantityCategory
+        ArrayList<String> articles1Copy = new ArrayList<>(articles1);
+        ArrayList<String> articles2Copy = new ArrayList<>(articles2);
+        if(toggleGroupQuantityCategory.getToggles().get(1).isSelected()){
+            for(ExcelRow row : firstList){
+                for(String string : articles1Copy){
+                    if(row.getArticul().equals(string)){
+                        if(row.getNa_sklade() < 1){
+                            articles1.remove(string);
+                            articles2.remove(string);
+                        }
+                    }
+                }
+            }
+            for(ExcelRow row : secondList){
+                for(String string : articles2Copy){
+                    if(row.getArticul().equals(string)){
+                        if(row.getNa_sklade() < 1){
+                            articles1.remove(string);
+                            articles2.remove(string);
+                        }
+                    }
+                }
+            }
         }
 
         for(String string : articles1){
@@ -255,7 +321,6 @@ public class ApplicationController {
                 onlyInFirst.add(string);
             }
         }
-
         for(String string : articles2){
             if(!articles1.contains(string)){
                 onlyInSecond.add(string);
@@ -416,8 +481,6 @@ public class ApplicationController {
         if(optionalS.isPresent() && optionalS.get().equals(ButtonType.YES)){
             Application.getJsonProperties().clearRecentFiles();
             initializeUpdateTableViews();
-        } else{
-            return;
         }
     }
 

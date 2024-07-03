@@ -6,6 +6,7 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.SeparatorMenuItem?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -18,14 +19,28 @@
             <MenuItem mnemonicParsing="false" onAction="#compare" text="Сравнить" />
             <MenuItem onAction="#clearRecentFiles" text="Очистить недавние файлы" />
         </Menu>
-        <Menu mnemonicParsing="false" text="Отображение">
-            <RadioMenuItem mnemonicParsing="false" selected="true" text="ВИА и ВВА">
-                <toggleGroup>
-                    <ToggleGroup fx:id="toggleGroupViaCategory"/>
-                </toggleGroup>
-            </RadioMenuItem>
-            <RadioMenuItem mnemonicParsing="false" text="Только ВИА" toggleGroup="$toggleGroupViaCategory"/>
-            <RadioMenuItem mnemonicParsing="false" text="Только ВВА" toggleGroup="$toggleGroupViaCategory"/>
+        <Menu mnemonicParsing="false" text="Фильтр">
+            <Menu fx:id="VIAandVVAtoggleSubMenu" mnemonicParsing="false" text="Тип: ВИА и ВВА">
+                <RadioMenuItem mnemonicParsing="false" selected="true" text="ВИА и ВВА">
+                    <toggleGroup>
+                        <ToggleGroup fx:id="toggleGroupViaCategory" />
+                    </toggleGroup>
+                </RadioMenuItem>
+                <RadioMenuItem mnemonicParsing="false" text="Только ВИА" toggleGroup="$toggleGroupViaCategory" />
+                <RadioMenuItem mnemonicParsing="false" text="Только ВВА" toggleGroup="$toggleGroupViaCategory" />
+            </Menu>
+         <Menu fx:id="quantitytoggleSubMenu" mnemonicParsing="false" text="Количество: Все">
+            <items>
+               <RadioMenuItem mnemonicParsing="false" selected="true" text="Все">
+                  <toggleGroup>
+                     <ToggleGroup fx:id="toggleGroupQuantityCategory" />
+                  </toggleGroup>
+               </RadioMenuItem>
+               <RadioMenuItem mnemonicParsing="false" text="Больше 0" toggleGroup="$toggleGroupQuantityCategory" />
+               <SeparatorMenuItem mnemonicParsing="false" />
+               <RadioMenuItem disable="true" mnemonicParsing="false" text="Задать количество" toggleGroup="$toggleGroupQuantityCategory" visible="false" />
+            </items>
+         </Menu>
         </Menu>
     </MenuBar>
     <Label layoutX="548.0" layoutY="27.0" text="Только в первом списке">
