@@ -10,7 +10,7 @@ import java.util.ArrayList;
 public class JsonProperties {
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final File file = new File(Application.getProgramDirectory() + "\\ViaFinderProperties.json");
-    private PropertiesPOJO propertiesPOJO;
+    private final PropertiesPOJO propertiesPOJO;
 
     public JsonProperties(){
         //Создание файла
@@ -36,7 +36,7 @@ public class JsonProperties {
         try{
             propertiesPOJO = objectMapper.readValue(file, PropertiesPOJO.class);
         } catch (Exception exc){
-            exc.printStackTrace();
+            throw new RuntimeException(exc);
         }
 
 
@@ -48,9 +48,7 @@ public class JsonProperties {
 
     public void addRecentFile(File recentFile){
         ArrayList<File> recentFiles = propertiesPOJO.getRecentFiles();
-        if(recentFiles.contains(recentFile)){
-            recentFiles.remove(recentFile);
-        }
+        recentFiles.remove(recentFile);
 
         recentFiles.addFirst(recentFile);
         propertiesPOJO.setRecentFiles(recentFiles);
