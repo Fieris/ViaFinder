@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class JsonProperties {
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final File file = new File(Application.getProgramDirectory() + "\\ViaFinderProperties.json");
+    private final File file = new File(Application.getProgramDirectory() + "/ViaFinderProperties.json");
     private final PropertiesPOJO propertiesPOJO;
 
     public JsonProperties(){
