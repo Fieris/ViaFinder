@@ -48,7 +48,11 @@ public class JsonProperties {
 
     public void addRecentFile(File recentFile){
         ArrayList<File> recentFiles = propertiesPOJO.getRecentFiles();
-        recentFiles.remove(recentFile);
+
+        //Если файл уже есть - выход из метода
+        if(recentFiles.contains(recentFile)){
+            return;
+        }
 
         recentFiles.addFirst(recentFile);
         propertiesPOJO.setRecentFiles(recentFiles);
